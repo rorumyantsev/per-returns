@@ -231,10 +231,10 @@ df.reset_index()
 for index_r, row_r in returns_df.iterrows():
     row_r["islast"] = "True"
     for index_df, row_df in df.iterrows():
-        #st.write(row_r["unique"])
-        #st.write(row_df["unique"])
-        #st.write(row_r["status_time"])
-        #st.write(row_df["status_time"])
+        st.write(row_r["unique"])
+        st.write(row_df["unique"])
+        st.write(row_r["status_time"])
+        st.write(row_df["status_time"])
         if row_r["unique"] == row_df["unique"] and row_r["status_time"]<row_df["status_time"]:
             row_r["islast"] = "False"
 
