@@ -232,9 +232,26 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 st.write(returns_df)
-        
+returns_df = returns_df.apply(lambda row: row["status_time"] = row["status_time"].strftime("%Y-%m-%dT%H:%M:%S.%f%z"), axis=1)
+st.write(returns_df)
+
+client_timezone = "America/Santiago"
+TODAY = datetime.datetime.now(timezone(client_timezone)).strftime("%Y-%m-%d") \
+    if option == "Today" \
+    else datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=1)
 
 
+with pandas.ExcelWriter(FILE_BUFFER, engine='xlsxwriter') as writer:
+    returns_df["created_time"] = returns_df["created_time"].apply(lambda a: pandas.to_datetime(a).date()).reindex()
+    returns_df.to_excel(writer, sheet_name='wh_routes_report')
+    writer.close()
+
+    st.download_button(
+        label="Download report as xlsx",
+        data=FILE_BUFFER,
+        file_name=f"route_report_{TODAY}.xlsx",
+        mime="application/vnd.ms-excel"
+    )
 
 
 
