@@ -177,7 +177,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                    report_pod_point_id, report_pickup_address, report_receiver_address, report_receiver_phone, report_receiver_name, report_comment,
                    report_courier_name, report_courier_park,
                    report_return_reason, report_route_id,
-                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time, report_point_C_time]
+                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time, report_point_C_time, "", ""]
             report.append(row)
         i = i + 1
     
@@ -187,7 +187,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                                              "pod_point_id", "pickup_address", "receiver_address", "receiver_phone", "receiver_name", "client_comment", 
                                              "courier_name", "courier_park",
                                              "return_reason", "route_id", "lon", "lat", "store_lon", "store_lat",
-                                             "corp_client_id", "point_B_time","point_C_time"])
+                                             "corp_client_id", "point_B_time","point_C_time", "unique","islast"])
 #     orders_with_pod = get_pod_orders()
 #     result_frame = result_frame.apply(lambda row: check_for_pod(row, orders_with_pod), axis=1)
 #    try:
@@ -222,10 +222,11 @@ df = get_cached_report(option)
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df.reset_index()
 df.reset_index()
-for index, row in returns_df.iterrows():
-    row["unique"] = row["client"]+row["barcode"]
-for index, row in df.iterrows():
-    row["unique"] = row["client"]+row["barcode"]
+#for index, row in returns_df.iterrows():
+#    row["unique"] = row["client"]+row["barcode"]
+#for index, row in df.iterrows():
+#    row["unique"] = row["client"]+row["barcode"]
+returns_df["unique"] = returns_df["client"]+returns_df["barcode"]
 st.write(returns_df)
 returns_df.reset_index()
 df.reset_index()
