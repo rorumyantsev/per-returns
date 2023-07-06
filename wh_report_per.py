@@ -232,26 +232,6 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 st.write(returns_df)
-
-#for index, row in returns_df.iterrows():
-#    row["unique"] = row["client"]+row["barcode"]
-#for index, row in df.iterrows():
-#    row["unique"] = row["client"]+row["barcode"]
-#st.write(returns_df)
-returns_df.reset_index()
-df.reset_index()
-for index_r, row_r in returns_df.iterrows():
-    st.write(index_r)
-    return_df["islast"][index_r] = "True"
-    for index_df, row_df in df.iterrows():
-        #st.write(row_r["unique"])
-        #st.write(row_df["unique"])
-        #st.write(row_r["status_time"])
-        #st.write(row_df["status_time"])
-        if row_r["unique"] == row_df["unique"] and row_r["status_time"]<row_df["status_time"]:
-            return_df["islast"][index_r] = "False"
-
-st.write(returns_df)
         
 
 
