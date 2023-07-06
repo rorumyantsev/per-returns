@@ -68,9 +68,9 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
             timezone(client_timezone)) - datetime.timedelta(days=1)
         date_from = date_from_offset.strftime("%Y-%m-%d")
         date_to = end_
-    elif option == "Weekly":
-        start_date = datetime.datetime.now(timezone(client_timezone))-datetime.timedelta(days=datetime.datetime.weekday(datetime.datetime.now(timezone(client_timezone))))
-        end_date=start_date + datetime.timedelta(days=6)
+    elif option == "Two weeks":
+        start_date = datetime.datetime.now(timezone(client_timezone))-datetime.timedelta(days=datetime.datetime.weekday(datetime.datetime.now(timezone(client_timezone)))+7)
+        end_date=start_date + datetime.timedelta(days=13)
         start_ = start_date.strftime("%Y-%m-%d")
         end_ = end_date.strftime("%Y-%m-%d")
         #start_ = "2023-06-26"
@@ -166,11 +166,17 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                 report_point_B_time = report_point_B_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
             except:
                 report_point_B_time = "Point B was never visited"
+            try:
+                report_point_С_time = datetime.datetime.strptime(claim['route_points'][2]['visited_at']['actual'],"%Y-%m-%dT%H:%M:%S.%f%z").astimezone(
+        timezone(client_timezone))
+                report_point_C_time = report_point_C_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+            except:
+                report_point_B_time = "Point B was never visited"    
             row = [report_cutoff, report_created_time, report_client, report_client_id, report_barcode, report_claim_id, report_lo_code, report_status, report_status_time, 
                    report_pod_point_id, report_pickup_address, report_receiver_address, report_receiver_phone, report_receiver_name, report_comment,
                    report_courier_name, report_courier_park,
                    report_return_reason, report_route_id,
-                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time]
+                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time,report_point_C_time]
             report.append(row)
         i = i + 1
     
@@ -180,7 +186,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                                              "pod_point_id", "pickup_address", "receiver_address", "receiver_phone", "receiver_name", "client_comment", 
                                              "courier_name", "courier_park",
                                              "return_reason", "route_id", "lon", "lat", "store_lon", "store_lat",
-                                             "corp_client_id", "point_B_time"])
+                                             "corp_client_id", "point_B_time","point_C_time"])
 #     orders_with_pod = get_pod_orders()
 #     result_frame = result_frame.apply(lambda row: check_for_pod(row, orders_with_pod), axis=1)
 #    try:
@@ -197,12 +203,12 @@ if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
 
-option = st.sidebar.selectbox(
-    "Select report date:",
-    ["Weekly", "Monthly", "Received", "Today", "Yesterday", "Tomorrow"]  # Disabled Monthly for now
-)
+#option = st.sidebar.selectbox(
+#    "Select report date:",
+#    ["Weekly", "Monthly", "Received", "Today", "Yesterday", "Tomorrow"]  # Disabled Monthly for now
+#)
 
-
+option = "Two weeks"
 @st.cache_data(ttl=1800.0)
 def get_cached_report(option):
     report = get_report(option)
@@ -210,7 +216,25 @@ def get_cached_report(option):
 
 
 df = get_cached_report(option)        
-delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
+#delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
+
+returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
+for row in returns_df:
+    st.write(row)
+
+
+
+
+
+
+
+
+
+
+
+
+###
+
 
 statuses = st.sidebar.multiselect(
     'Filter by status:',
@@ -518,5 +542,5 @@ with pandas.ExcelWriter(FILE_BUFFER, engine='xlsxwriter') as writer:
         file_name=f"route_report_{TODAY}.xlsx",
         mime="application/vnd.ms-excel"
     )
-
+###
 print(f"{datetime.datetime.now()}: Finished")
