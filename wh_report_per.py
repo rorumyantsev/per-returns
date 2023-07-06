@@ -47,6 +47,13 @@ def get_claims(secret, date_from, date_to, cursor=0):
     except:
         return [], None
 
+def check_islast (row, df):
+    df.index_reset()
+    row["islast"] = "True"
+    for index, row_df in df.iterrows():
+        if row["unique"] == row_df["unique"] and row["status_time"]<row_df["status_time"]:
+            row["islast"] = "False"
+    return row
 
 def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
     
@@ -219,7 +226,9 @@ def get_cached_report(option):
 df = get_cached_report(option)        
 #delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 df["unique"] = df["client"]+df["barcode"]
-df["islast"] = df["barcode"]
+df["islast"].apply(lambda row: check_islast(row, df), axis=1)
+st.write(df)
+
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 #for index, row in returns_df.iterrows():
 #    row["unique"] = row["client"]+row["barcode"]
