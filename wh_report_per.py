@@ -49,7 +49,7 @@ def get_claims(secret, date_from, date_to, cursor=0):
 
 def check_islast (row, df):
     row["islast"] = "True"
-    df_temp = df[df["unique"].isin([row["unique"]])
+    df_temp = df[df["unique"].isin([row["unique"]])]
     last = df_temp["status_time"].max()
     
     #for index, row_df in df.iterrows():
