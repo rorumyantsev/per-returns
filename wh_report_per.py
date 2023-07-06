@@ -229,7 +229,7 @@ df = get_cached_report(option)
 #delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
-returns_df.apply(lambda row: check_islast(row, df), axis=1)
+returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 st.write(returns_df)
 
 #for index, row in returns_df.iterrows():
