@@ -224,9 +224,9 @@ df.reset_index()
 for index, row in returns_df.iterrows():
     row["unique"] = row["client"]+row["barcode"]
 returns_df.reset_index()
-for index, row_r in returns_df.iterrows():
+for index_r, row_r in returns_df.iterrows():
     row_r["islast"] = "True"
-    for row_df in df.rows:
+    for index_df, row_df in df.iterrows():
         if row_r["unique"] == row_df["unique"] and row_r["status_time"]<row_df["status_time"]:
             row_r["islast"] = "False"
 
