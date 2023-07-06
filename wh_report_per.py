@@ -48,7 +48,7 @@ def get_claims(secret, date_from, date_to, cursor=0):
         return [], None
 
 def check_islast (row, df):
-    df.index_reset()
+    df.reset_index()
     row["islast"] = "True"
     for index, row_df in df.iterrows():
         if row["unique"] == row_df["unique"] and row["status_time"]<row_df["status_time"]:
