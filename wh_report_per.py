@@ -138,7 +138,8 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                 report_comment = "Missing comment in claim"
             report_status = claim['status']
             report_created_time = dateutil.parser.isoparse(claim['created_ts']).astimezone(timezone(client_timezone))
-            report_status_time = dateutil.parser.isoparse(claim['updated_ts']).astimezone(timezone(client_timezone))
+            report_status_time = datetime.datetime.strptime(claim['updated_ts'],"%Y-%m-%dT%H:%M:%S.%f%z").astimezone(
+        timezone(client_timezone))
             report_longitude = claim['route_points'][1]['address']['coordinates'][0]
             report_latitude = claim['route_points'][1]['address']['coordinates'][1]
             report_store_longitude = claim['route_points'][0]['address']['coordinates'][0]
