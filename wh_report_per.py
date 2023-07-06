@@ -173,13 +173,13 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
             try:
                 report_point_B_time = datetime.datetime.strptime(claim['route_points'][1]['visited_at']['actual'],"%Y-%m-%dT%H:%M:%S.%f%z").astimezone(
         timezone(client_timezone))
-                report_point_B_time = report_point_B_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+                report_point_B_time = report_point_B_time.strftime("%Y-%m-%d %H:%M:%S")
             except:
                 report_point_B_time = "Point B was never visited"
             try:
                 report_point_С_time = datetime.datetime.strptime(claim['route_points'][2]['visited_at']['actual'],"%Y-%m-%dT%H:%M:%S.%f%z").astimezone(
         timezone(client_timezone))
-                report_point_C_time = report_point_C_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+                report_point_C_time = report_point_C_time.strftime("%Y-%m-%d %H:%M:%S")
             except:
                 report_point_C_time = "Point C was never visited"    
             row = [report_cutoff, report_created_time, report_client, report_client_id, report_barcode, report_claim_id, report_lo_code, report_status, report_status_time, 
@@ -232,7 +232,7 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 st.write(returns_df)
-returns_df["status_time"] = returns_df["status_time"].apply(lambda a: a.strftime("%Y-%m-%dT%H:%M:%S.%f%z"))
+returns_df["status_time"] = returns_df["status_time"].apply(lambda a: a.strftime("%Y-%m-%d %H:%M:%S"))
 st.write(returns_df)
 
 client_timezone = "America/Santiago"
