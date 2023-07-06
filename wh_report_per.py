@@ -187,7 +187,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                                              "pod_point_id", "pickup_address", "receiver_address", "receiver_phone", "receiver_name", "client_comment", 
                                              "courier_name", "courier_park",
                                              "return_reason", "route_id", "lon", "lat", "store_lon", "store_lat",
-                                             "corp_client_id", "point_B_time","point_C_time", "unique","islast"])
+                                             "corp_client_id", "point_B_time","point_C_time", "unique", "islast"])
 #     orders_with_pod = get_pod_orders()
 #     result_frame = result_frame.apply(lambda row: check_for_pod(row, orders_with_pod), axis=1)
 #    try:
@@ -219,6 +219,7 @@ def get_cached_report(option):
 df = get_cached_report(option)        
 #delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 df["unique"] = df["client"]+df["barcode"]
+df["islast"] = df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 #for index, row in returns_df.iterrows():
 #    row["unique"] = row["client"]+row["barcode"]
@@ -228,6 +229,7 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df.reset_index()
 df.reset_index()
 for index_r, row_r in returns_df.iterrows():
+    st.write(index_r)
     return_df["islast"][index_r] = "True"
     for index_df, row_df in df.iterrows():
         #st.write(row_r["unique"])
