@@ -226,6 +226,7 @@ for index, row in returns_df.iterrows():
     row["unique"] = row["client"]+row["barcode"]
 for index, row in df.iterrows():
     row["unique"] = row["client"]+row["barcode"]
+st.write(returns_df)
 returns_df.reset_index()
 df.reset_index()
 for index_r, row_r in returns_df.iterrows():
