@@ -219,9 +219,12 @@ df = get_cached_report(option)
 #delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
-for row in returns_df.rows:
+returns_df.reset_index()
+df.reset_index()
+for index, row in returns_df.iterrows():
     row["unique"] = row["client"]+row["barcode"]
-for row_r in returns_df.rows:
+returns_df.reset_index()
+for index, row_r in returns_df.iterrows():
     row_r["islast"] = "True"
     for row_df in df.rows:
         if row_r["unique"] == row_df["unique"] and row_r["status_time"]<row_df["status_time"]:
