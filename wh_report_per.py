@@ -232,7 +232,7 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 st.write(returns_df)
-returns_df = returns_df.apply(lambda row: row["status_time"] = row["status_time"].strftime("%Y-%m-%dT%H:%M:%S.%f%z"), axis=1)
+returns_df["status_time" = returns_df["status_time"].apply(lambda a: a.strftime("%Y-%m-%dT%H:%M:%S.%f%z"))
 st.write(returns_df)
 
 client_timezone = "America/Santiago"
