@@ -235,8 +235,14 @@ df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
+def get_date (strangething):
+    if strangething = "Point C was never visited":
+        return numpy.nan
+    else:
+        return strangething.date()
+returns_df["point_C_date"] = returns_df["point_C_time"].apply(lambda a: get_date(a))
 try:
-    returns_df = returns_df[returns_df["point_C_time"].where((returns_df["point_C_time"]=="Point C was never visited") | ((returns_df["point_C_time"].date()>=filter_from) & (returns_df["point_C_time"].date()<=filter_to)))]
+    returns_df = returns_df[returns_df["point_C_date"].where((returns_df["point_C_date"]>=filter_from) & (returns_df["point_C_date"]<=filter_to))]
 except Exception as error:
     st.write(error)
 returns_df["islast"]=numpy.nan
