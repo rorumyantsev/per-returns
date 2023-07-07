@@ -227,22 +227,22 @@ def get_cached_report(option):
 
 df = get_cached_report(option)        
 #delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
+st.sidebar.date_input("date interval of returns",value = (datetime.datetime.now(timezone(client_timezone)).date,datetime.datetime.now(timezone(client_timezone)).date), min_value = start_date.date, max_value = end_date.date)
 df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 st.write(returns_df)
-returns_df["status_time"] = returns_df["status_time"].apply(lambda a: a.strftime("%Y-%m-%d %H:%M:%S"))
-st.write(returns_df)
 
-client_timezone = "America/Santiago"
+
+client_timezone = "America/Lima"
 TODAY = datetime.datetime.now(timezone(client_timezone)).strftime("%Y-%m-%d") \
     if option == "Today" \
     else datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=1)
-
-
+returns_df["status_time"] = returns_df["status_time"].apply(lambda a: a.strftime("%Y-%m-%d %H:%M:%S"))
+returns_df["created_time"] = returns_df["created_time"].apply(lambda a: pandas.to_datetime(a).date()).reindex()
 with pandas.ExcelWriter(FILE_BUFFER, engine='xlsxwriter') as writer:
-    returns_df["created_time"] = returns_df["created_time"].apply(lambda a: pandas.to_datetime(a).date()).reindex()
+    
     returns_df.to_excel(writer, sheet_name='wh_routes_report')
     writer.close()
 
