@@ -234,8 +234,8 @@ filters = st.sidebar.date_input("select returns on which dates you're interested
 filter_from = filters[0] 
 try:
     filters[1]
-except:
-    NameError: filters[1] = None
+except NameError:
+    filters[1] = None
 
 if filters[1] == None:
     filter_to = filter_from
