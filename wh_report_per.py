@@ -245,7 +245,7 @@ def check_date (strangething,filter_from,filter_to):
             return False
 returns_df["filter_date"] = returns_df["point_C_time"].apply(lambda a: check_date(a,filter_from,filter_to))
 try:
-    returns_df = returns_df[returns_df["filter_date"].isin[True]]
+    returns_df = returns_df[returns_df["filter_date"].isin([True])]
 except Exception as error:
     st.write(error)
 returns_df["islast"]=numpy.nan
