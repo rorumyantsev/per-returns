@@ -237,7 +237,7 @@ returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 def get_date (strangething):
     if strangething == "Point C was never visited":
-        return numpy.nan
+        return (datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=100000)).date()
     else:
         return strangething.date()
 returns_df["point_C_date"] = returns_df["point_C_time"].apply(lambda a: get_date(a))
