@@ -230,13 +230,13 @@ df = get_cached_report(option)
 start_date = datetime.datetime.now(timezone(client_timezone))-datetime.timedelta(days=datetime.datetime.weekday(datetime.datetime.now(timezone(client_timezone)))+7)
 end_date=start_date + datetime.timedelta(days=13)
 filter_from, filter_to = st.sidebar.date_input("select returns on which dates you're interested in",value = (datetime.datetime.now(timezone(client_timezone)),datetime.datetime.now(timezone(client_timezone))), min_value = start_date, max_value = end_date)
-filter_to = filter_to + datetime.timedelta(days=1)
+#filter_to = filter_to + datetime.timedelta(days=1)
 df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 try:
-    returns_df = returns_df[returns_df["point_C_time"].where((returns_df["point_C_time"]=="Point C was never visited") | ((returns_df["point_C_time"]>filter_from) & (returns_df["point_C_time"]<filter_to)))]
+    returns_df = returns_df[returns_df["point_C_time"].where((returns_df["point_C_time"]=="Point C was never visited") | ((returns_df["point_C_time"].date()>=filter_from) & (returns_df["point_C_time"].date()<=filter_to)))]
 except Exception as error:
     st.write(error)
 returns_df["islast"]=numpy.nan
