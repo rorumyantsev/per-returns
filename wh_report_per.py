@@ -180,7 +180,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                 #st.write(claim['route_points'][2]['visited_at']['actual'])
                 report_point_C_time = datetime.datetime.strptime(claim['route_points'][2]['visited_at']['actual'],"%Y-%m-%dT%H:%M:%S.%f%z").astimezone(timezone(client_timezone))
                 #report_point_C_time = report_point_C_time.strftime("%Y-%m-%d %H:%M:%S")
-            except Exception as error:
+            except:
                 report_point_C_time = "Point C was never visited"  
             row = [report_cutoff, report_created_time, report_client, report_client_id, report_barcode, report_claim_id, report_lo_code, report_status, report_status_time, 
                    report_pod_point_id, report_pickup_address, report_receiver_address, report_receiver_phone, report_receiver_name, report_comment,
@@ -236,7 +236,7 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 try:
-    returns_df = returns_df[returns_df["point_C_time"].where(returns_df["point_C_time"]>filter_from and returns_df["point_C_time"]<filter_to)]
+    returns_df = returns_df[returns_df["point_C_time"].where(returns_df["point_C_time"]=="Point C was never visited" or (returns_df["point_C_time"]>filter_from and returns_df["point_C_time"]<filter_to))]
 except Exception as error:
     st.write(error)
 returns_df["islast"]=numpy.nan
