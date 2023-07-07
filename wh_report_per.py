@@ -229,11 +229,14 @@ df = get_cached_report(option)
 #delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 start_date = datetime.datetime.now(timezone(client_timezone))-datetime.timedelta(days=datetime.datetime.weekday(datetime.datetime.now(timezone(client_timezone)))+7)
 end_date=start_date + datetime.timedelta(days=13)
-filters = []
-filters.append(None)
-filters.append(None)
+
 filters = st.sidebar.date_input("select returns on which dates you're interested in",value = (datetime.datetime.now(timezone(client_timezone)),datetime.datetime.now(timezone(client_timezone))), min_value = start_date, max_value = end_date)
 filter_from = filters[0] 
+try:
+    filters[1]
+except:
+    NameError: filters[1] = None
+
 if filters[1] == None:
     filter_to = filter_from
 else:
