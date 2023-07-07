@@ -232,8 +232,7 @@ end_date=start_date + datetime.timedelta(days=13)
 
 filters = st.sidebar.date_input("select returns on which dates you're interested in",value = (datetime.datetime.now(timezone(client_timezone)),datetime.datetime.now(timezone(client_timezone))), min_value = start_date, max_value = end_date)
 filter_from = filters[0] 
-try:
-    filters[1]
+try: filters[1]
 except NameError:
     filters[1] = None
 
