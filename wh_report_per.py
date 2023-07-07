@@ -230,7 +230,7 @@ df = get_cached_report(option)
 start_date = datetime.datetime.now(timezone(client_timezone))-datetime.timedelta(days=datetime.datetime.weekday(datetime.datetime.now(timezone(client_timezone)))+7)
 end_date=start_date + datetime.timedelta(days=13)
 filter_from, filter_to = st.sidebar.date_input("select returns on which dates you're interested in",value = (datetime.datetime.now(timezone(client_timezone)),datetime.datetime.now(timezone(client_timezone))), min_value = start_date, max_value = end_date)
-filter_to = filter_to.replace(hour=23, minute=59, second=59, microsecond=999999)
+filter_to = filter_to + datetime.timedelta(days=1)
 df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
