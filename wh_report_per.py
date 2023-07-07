@@ -236,7 +236,7 @@ if len(filters)<2:
     filter_to = filter_from
 else:
     filter_to = filters[1]
-returning = st.checkbox("Include returning orders")
+returning = st.sidebar.checkbox("Include returning orders")
 df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
