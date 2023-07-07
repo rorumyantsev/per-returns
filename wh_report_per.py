@@ -236,7 +236,7 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 try:
-    returns_df = returns_df[returns_df["Point_C_time"].where(returns_df["Point_C_time"]>filter_from and returns_df["Point_C_time"]<filter_to)]
+    returns_df = returns_df[returns_df["point_C_time"].where(returns_df["point_C_time"]>filter_from and returns_df["point_C_time"]<filter_to)]
 except Exception as error:
     st.write(error)
 returns_df["islast"]=numpy.nan
@@ -249,7 +249,7 @@ TODAY = datetime.datetime.now(timezone(client_timezone)).strftime("%Y-%m-%d") \
     if option == "Today" \
     else datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=1)
 returns_df["status_time"] = returns_df["status_time"].apply(lambda a: a.strftime("%Y-%m-%d %H:%M:%S"))
-returns_df["Point_c_time"] = returns_df["Point_C_time"].apply(lambda a: a.strftime("%Y-%m-%d %H:%M:%S"))
+returns_df["point_c_time"] = returns_df["Point_C_time"].apply(lambda a: a.strftime("%Y-%m-%d %H:%M:%S"))
 returns_df["created_time"] = returns_df["created_time"].apply(lambda a: pandas.to_datetime(a).date()).reindex()
 with pandas.ExcelWriter(FILE_BUFFER, engine='xlsxwriter') as writer:
     
