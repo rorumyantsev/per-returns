@@ -227,7 +227,7 @@ def get_cached_report(option):
 
 df = get_cached_report(option)        
 #delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
-st.sidebar.date_input("date interval of returns",value = (datetime.datetime.now(timezone(client_timezone)).date,datetime.datetime.now(timezone(client_timezone)).date), min_value = start_date.date, max_value = end_date.date)
+st.sidebar.date_input("date interval of returns",value = (datetime.datetime.now(timezone(client_timezone)),datetime.datetime.now(timezone(client_timezone))), min_value = start_date, max_value = end_date)
 df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
