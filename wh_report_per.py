@@ -233,6 +233,8 @@ filters = st.sidebar.date_input("select returns on which dates you're interested
 filter_from = filters[0] 
 if filters[1] == None:
     filter_to = filter_from
+else:
+    filter_to = filters[1]
 df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
