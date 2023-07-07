@@ -230,7 +230,7 @@ df = get_cached_report(option)
 start_date = datetime.datetime.now(timezone(client_timezone))-datetime.timedelta(days=datetime.datetime.weekday(datetime.datetime.now(timezone(client_timezone)))+7)
 end_date=start_date + datetime.timedelta(days=13)
 try:
-    st.sidebar.date_input("date interval of returns",value = (datetime.datetime.now(timezone(client_timezone))), min_value = start_date, max_value = end_date)
+    st.sidebar.date_input("date interval of returns",value = (datetime.datetime.now(timezone(client_timezone)),datetime.datetime.now(timezone(client_timezone))), min_value = start_date, max_value = end_date)
 except Exception as error:
     st.write(error)
 df["unique"] = df["client"]+df["barcode"]
