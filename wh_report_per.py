@@ -236,7 +236,7 @@ returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
 def get_date (strangething):
-    if strangething = "Point C was never visited":
+    if strangething == "Point C was never visited":
         return numpy.nan
     else:
         return strangething.date()
