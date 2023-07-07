@@ -179,7 +179,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
             try:
                 report_point_С_time = datetime.datetime.strptime(claim['route_points'][2]['visited_at']['actual'],"%Y-%m-%dT%H:%M:%S.%f%z").astimezone(
         timezone(client_timezone))
-                report_point_C_time = report_point_C_time.strftime("%Y-%m-%d %H:%M:%S")
+                report_point_C_time = report_point_C_time.datetime.strftime("%Y-%m-%d %H:%M:%S")
             except Exception as error:
                 report_point_C_time = error    
             row = [report_cutoff, report_created_time, report_client, report_client_id, report_barcode, report_claim_id, report_lo_code, report_status, report_status_time, 
