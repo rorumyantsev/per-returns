@@ -248,8 +248,7 @@ try:
     returns_df = returns_df[returns_df["filter_date"].isin([True])]
 except Exception as error:
     st.write(error)
-returns_df["islast"]=numpy.nan
-returns_df["unique"]=numpy.nan
+returns_df = returns_df.drop(["islast","unique","filter_date"], axis=1)
 st.write(returns_df)
 
 
