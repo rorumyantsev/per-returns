@@ -180,8 +180,8 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                 report_point_С_time = datetime.datetime.strptime(claim['route_points'][2]['visited_at']['actual'],"%Y-%m-%dT%H:%M:%S.%f%z").astimezone(
         timezone(client_timezone))
                 report_point_C_time = report_point_C_time.strftime("%Y-%m-%d %H:%M:%S")
-            except:
-                report_point_C_time = "Point C was never visited"    
+            except Exception as error:
+                report_point_C_time = "Point C was never visited"+e    
             row = [report_cutoff, report_created_time, report_client, report_client_id, report_barcode, report_claim_id, report_lo_code, report_status, report_status_time, 
                    report_pod_point_id, report_pickup_address, report_receiver_address, report_receiver_phone, report_receiver_name, report_comment,
                    report_courier_name, report_courier_park,
