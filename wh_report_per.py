@@ -241,6 +241,7 @@ def get_date (strangething):
     else:
         return strangething.date()
 returns_df["point_C_date"] = returns_df["point_C_time"].apply(lambda a: get_date(a))
+st.write(returns_df["point_C_date"])
 try:
     returns_df = returns_df[returns_df["point_C_date"].where((returns_df["point_C_date"]>=filter_from) & (returns_df["point_C_date"]<=filter_to))]
 except Exception as error:
