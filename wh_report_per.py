@@ -257,7 +257,7 @@ TODAY = datetime.datetime.now(timezone(client_timezone)).strftime("%Y-%m-%d") \
     if option == "Today" \
     else datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=1)
 returns_df["status_time"] = returns_df["status_time"].apply(lambda a: a.strftime("%Y-%m-%d %H:%M:%S"))
-returns_df["point_c_time"] = returns_df["Point_C_time"].apply(lambda a: if a == "Point C was never visited" a else a.strftime("%Y-%m-%d %H:%M:%S"))
+returns_df["point_c_time"] = returns_df["Point_C_time"].apply(lambda a: a if a == "Point C was never visited" else a.strftime("%Y-%m-%d %H:%M:%S"))
 returns_df["created_time"] = returns_df["created_time"].apply(lambda a: pandas.to_datetime(a).date()).reindex()
 with pandas.ExcelWriter(FILE_BUFFER, engine='xlsxwriter') as writer:
     
