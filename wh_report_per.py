@@ -196,7 +196,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                                              "pod_point_id", "pickup_address", "receiver_address", "receiver_phone", "receiver_name", "client_comment", 
                                              "courier_name", "courier_park",
                                              "return_reason", "route_id", "lon", "lat", "store_lon", "store_lat",
-                                             "corp_client_id", "point_B_time","point_C_time", "point_C_date", "unique", "islast"])
+                                             "corp_client_id", "point_B_time","point_C_time", "filter_date", "unique", "islast"])
 #     orders_with_pod = get_pod_orders()
 #     result_frame = result_frame.apply(lambda row: check_for_pod(row, orders_with_pod), axis=1)
 #    try:
@@ -235,15 +235,17 @@ df["unique"] = df["client"]+df["barcode"]
 returns_df = df[df['status'].isin(['returning','returned','returned_finish'])]
 returns_df = returns_df.apply(lambda row: check_islast(row, df), axis=1)
 returns_df = returns_df[returns_df["islast"].isin(["True"])]
-def get_date (strangething):
+def check_date (strangething,filter_from,filter_to):
     if strangething == "Point C was never visited":
-        return (datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=100000)).date()
+        return True
     else:
-        return strangething.date()
-returns_df["point_C_date"] = returns_df["point_C_time"].apply(lambda a: get_date(a))
-st.write(returns_df["point_C_date"])
+        if strangething.date()>=filter_from and strangething.date()<=filter_to:
+            return True
+        else:
+            return False
+returns_df["filter_date"] = returns_df["point_C_time"].apply(lambda a: check_date(a,filter_from,filter_to))
 try:
-    returns_df = returns_df[returns_df["point_C_date"].where((returns_df["point_C_date"]>=filter_from) & (returns_df["point_C_date"]<=filter_to))]
+    returns_df = returns_df[returns_df["filter_date"].isin[True]]
 except Exception as error:
     st.write(error)
 returns_df["islast"]=numpy.nan
